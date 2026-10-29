@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Bolos</title>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/listarBolos.css">
+
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+<!-- Navbar padrão -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/">BoloTematico</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/auth/logout">Sair</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Conteúdo principal -->
+<main class="container py-5">
+    <h2 class="text-center mb-4">Lista de Bolos</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover shadow-sm">
+            <thead class="table-primary">
+            <tr>
+                <th>Tamanho</th>
+                <th>Massa</th>
+                <th>Recheio</th>
+                <th>Data</th>
+                <th>Tema</th>
+                <th>Aniversariante</th>
+                <th>Idade</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody id="boloBody">
+            <!-- Linhas geradas dinamicamente -->
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer class="text-center text-muted py-3 mt-auto">
+    &copy; 2026 BoloTematico. Todos os direitos reservados.
+</footer>
+
+
+<script>
+    async  function deleteBolo(id){
+        if (!confirm('Deseja realmente excluir este bolo?')) return;
+        const res = await fetch(`bolos/delete/${id}`, {method:'DELETE'});
+        if (res.ok) {loadBolos()}
+    }
+    async function loadBolos() {
+        try {
+            const res = await fetch('bolos/list');
+            const list = await res.json();
+            const tbody = document.getElementById('boloBody');
+            tbody.innerHTML = '';
+            list.forEach(b => {
+                const row = `<tr>
+                    <td>${b.tamanho}</td>
+                    <td>${b.massa}</td>
+                    <td>${b.recheio}</td>
+                    <td>${new Date(b.data).toLocaleDateString('pt-BR')}</td>
+                    <td>${b.tema}</td>
+                    <td>${b.aniversariante}</td>
+                    <td>${b.idade}</td>
+                    <td>
+                        <button onclick="deleteBolo(${b.id})" class="btn btn-outline-danger">Excluir</button>
+                    </td>
+                </tr>`;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    window.addEventListener('DOMContentLoaded', loadBolos);
+</script>
+
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous">
+</script>
+</body>
+</html>

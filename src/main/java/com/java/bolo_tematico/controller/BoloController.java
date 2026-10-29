@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fretes")
+@RequestMapping("/bolos")
 public class BoloController {
 
     @Autowired
@@ -25,8 +25,6 @@ public class BoloController {
         boloRepo.save(bolo);
     }
 
-    @PostMapping("/delete")
-    public void delete(@RequestBody Bolo bolo) {
-        boloRepo.delete(bolo);
-    }
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable Long id) { boloRepo.deleteById(id); }
 }
