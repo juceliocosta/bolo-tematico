@@ -1,5 +1,6 @@
 package com.java.bolo_tematico.service;
 
+import com.java.bolo_tematico.model.Role;
 import com.java.bolo_tematico.model.User;
 import com.java.bolo_tematico.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
@@ -20,7 +21,7 @@ public class AuthService {
                 .orElse(null);
     }
 
-    public void register(String username, String password, String role) {
+    public void register(String username, String password, Role role) {
         String hash = BCrypt.hashpw(password, BCrypt.gensalt(12));
         User user = new User();
         user.setUsername(username);

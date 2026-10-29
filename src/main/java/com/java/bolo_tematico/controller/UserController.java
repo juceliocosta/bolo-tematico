@@ -31,4 +31,7 @@ public class UserController {
                 user.getRole()
         );
     }
+
+    @DeleteMapping("/delete/{username}")
+    public void delete(@PathVariable String username) { userRepo.deleteById(username); }
 }

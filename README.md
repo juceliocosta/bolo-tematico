@@ -11,19 +11,19 @@ sudo mysql -u root -p
 ```shell
 create database bolotematico;
 ```
-
+### Exemplo de usuario
 - Crie um usuário com acesso ao banco
 ```shell
-CREATE USER 'root-bolotematico'@'localhost' IDENTIFIED BY 'Senha-desse-usuario';
+CREATE USER 'bolotematico-root'@'localhost' IDENTIFIED BY 'senha-root';
 ```
+>obs.: o usuário e senha deve ser a mesma do arquivo application.propeties
 
 - conceda todos os privilégios ao banco bolotematico
 ```shell
-GRANT ALL PRIVILEGES ON bolotematico.* TO 'root-bolotematico'@'localhost';
+GRANT ALL PRIVILEGES ON bolotematico.* TO 'bolotematico-root'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 ```
-- Salve a senha desse usuário no atributo *spring.datasource.password* do arquivo **application.properties**
 
 ## Acessar a página
 http://localhost:8080/
