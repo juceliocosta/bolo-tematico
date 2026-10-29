@@ -32,10 +32,10 @@
         <table class="table table-striped table-hover shadow-sm">
             <thead class="table-primary">
             <tr>
+                <th>Data</th>
                 <th>Tamanho</th>
                 <th>Massa</th>
                 <th>Recheio</th>
-                <th>Data</th>
                 <th>Tema</th>
                 <th>Aniversariante</th>
                 <th>Idade</th>
@@ -68,14 +68,19 @@
             tbody.innerHTML = '';
             list.forEach(b => {
                 const row = `<tr>
+                    <td>${new Date(b.data).toLocaleDateString('pt-BR')}</td>
                     <td>${b.tamanho}</td>
                     <td>${b.massa}</td>
                     <td>${b.recheio}</td>
-                    <td>${new Date(b.data).toLocaleDateString('pt-BR')}</td>
                     <td>${b.tema}</td>
                     <td>${b.aniversariante}</td>
                     <td>${b.idade}</td>
-                    <td>
+                    <td class="d-flex gap-2">
+                        <button 
+                            onclick="window.location.href='editarBolo.html?id=${b.id}'"
+                            class="btn btn-outline-primary"
+                        >Editar</button>
+
                         <button onclick="deleteBolo(${b.id})" class="btn btn-outline-danger">Excluir</button>
                     </td>
                 </tr>`;

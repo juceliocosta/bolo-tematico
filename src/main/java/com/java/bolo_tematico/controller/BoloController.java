@@ -25,6 +25,12 @@ public class BoloController {
         boloRepo.save(bolo);
     }
 
+    @PutMapping("/update/{id}")
+    public void update(@PathVariable Long id, @RequestBody Bolo bolo) { boloRepo.save(bolo); }
+
+    @GetMapping("{id}")
+    public Bolo findById(@PathVariable Long id) { return boloRepo.findById(id).get(); }
+
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Long id) { boloRepo.deleteById(id); }
 }

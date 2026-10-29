@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Bolo</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/cadastrarBolo.css">
+
+</head>
+
+<body class="bg-light d-flex flex-column min-vh-100">
+<!-- Navbar padrão -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/">BoloTematico</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/auth/logout">Sair</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- Formulário -->
+<main class="flex-grow-1 d-flex justify-content-center align-items-center">
+    <div class="card shadow p-4 cadastrar-bolo-form">
+        <h3 class="text-center mb-4">Atualizar Bolo</h3>
+        <form method="POST" id="boloForm">
+            <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
+                <div class="w-100">
+                    <div class="mb-3">
+                        <label for="tamanho" class="form-label">Tamanho do Bolo</label>
+                        <select class="form-select" id="tamanho" name="tamanho" required>
+                            <option value="pequeno">Pequeno</option>
+                            <option value="medio">Médio</option>
+                            <option value="grande">Grande</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="massa" class="form-label">Massa do Bolo</label>
+                        <select class="form-select" id="massa" name="massa" required>
+                            <option value="chocolate">Chocolate</option>
+                            <option value="branca">Branca</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recheio" class="form-label">Recheio do Bolo</label>
+                        <select class="form-select" id="recheio" name="recheio" required>
+                            <option value="brigadeiro">Brigadeiro</option>
+                            <option value="prestigio">Prestígio</option>                    
+                            <option value="ninho">Leite Ninho</option>                    
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="data" class="form-label">Data de Entrega</label>
+                        <input type="date" class="form-control" id="data" name="data" required>
+                    </div>
+                </div>
+                <div class="w-100">
+                    <div class="mb-3">
+                        <label for="tema" class="form-label">Tema do Bolo</label>
+                        <input type="text" class="form-control" id="tema" name="tema" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="aniversariante" class="form-label">Nome do Aniversariante</label>
+                        <input type="text" class="form-control" id="aniversariante" name="aniversariante" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="idade" class="form-label">Idade do Aniversariante</label>
+                        <input type="number" class="form-control" id="idade" name="idade" required>
+                        <input type="hidden" id="bolo-id" />
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid mt-2">
+                <button type="submit" class="btn btn-success">Atualizar Bolo</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer class="text-center text-muted py-3 mt-auto">
+    &copy; 2026 BoloTematico. Todos os direitos reservados.
+</footer>
+
+<script>
+    let boloId;
+
+    async function onLoad() {
+        const urlParams = new URLSearchParams(window.location.search);
+        boloId = urlParams.get('id');
+
+        if (!boloId) {
+            alert("Nenhum bolo foi selecionado para edição.");
+            window.location.href = "listarBolos.html";
+            return;
+        }
+
+        document.getElementById('bolo-id').value = boloId;
+
+        try {
+            const response = await fetch(`bolos/${boloId}`);
+            
+            if (!response.ok) {
+                throw new Error("Erro ao buscar dados do bolo.");
+            }
+
+            const bolo = await response.json();
+
+            document.getElementById('tamanho').value = bolo.tamanho;
+            document.getElementById('massa').value = bolo.massa;
+            document.getElementById('recheio').value = bolo.recheio;
+            document.getElementById('data').value = bolo.data.split('T')[0];
+            document.getElementById('tema').value = bolo.tema;
+            document.getElementById('aniversariante').value = bolo.aniversariante; // Corrigido de .aniversario para .aniversariante
+            document.getElementById('idade').value = bolo.idade;
+
+        } catch (error) {
+            console.error(error);
+            alert("Erro ao carregar os dados do bolo.");
+        }
+    }
+
+    async function onSubmit(e) {
+        e.preventDefault();
+        const form = e.target;
+
+        const bolo = {
+            id: Number(boloId),
+            tamanho: form.tamanho.value,
+            massa: form.massa.value,
+            recheio: form.recheio.value,
+            data: form.data.value,
+            tema: form.tema.value,
+            aniversariante: form.aniversariante.value,
+            idade: parseInt(form.idade.value),
+        };
+
+        const res = await fetch(`bolos/update/${boloId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bolo)
+        });
+
+        if (res.ok) {
+            alert('Bolo atualizado com sucesso!');
+            window.location.href = 'listarBolos.html';
+        } else {
+            alert('Erro ao atualizar o bolo.');
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        onLoad();
+        document.getElementById('boloForm').addEventListener('submit', onSubmit);
+    });
+</script>
+
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous">
+</script>
+</body>
+</html>
