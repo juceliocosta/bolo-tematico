@@ -19,6 +19,9 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="baixarRelatorioPDF(event)">Relatório</a>
+                </li>
                 <li class="nav-item"><a class="nav-link" href="/auth/logout">Sair</a></li>
             </ul>
         </div>
@@ -55,11 +58,30 @@
 
 
 <script>
+    async function baixarRelatorioPDF(event) {
+        event.preventDefault();
+        try {
+            const response = await fetch('/report/pdf');
+
+            if (!response.ok) {
+                throw new Error('Erro ao gerar relatório');
+            }
+
+            const blob = await response.blob();
+            const pdfUrl = URL.createObjectURL(blob);
+            window.open(pdfUrl, '_blank');
+        } catch (e) {
+            console.error(e);
+            alert('Não foi possível carregar o relatório PDF.');
+        }
+    }
+
     async  function deleteBolo(id){
         if (!confirm('Deseja realmente excluir este bolo?')) return;
         const res = await fetch(`bolos/delete/${id}`, {method:'DELETE'});
         if (res.ok) {loadBolos()}
     }
+
     async function loadBolos() {
         try {
             const res = await fetch('bolos/list');
