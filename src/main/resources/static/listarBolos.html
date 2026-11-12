@@ -12,23 +12,24 @@
 
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
-<!-- Navbar padrão -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-        <a class="navbar-brand" href="/">BoloTematico</a>
+        <a class="navbar-brand" href="#">BoloTematico</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="baixarRelatorioPDF(event)" data-role="ADMIN">Relatório</a>
-                </li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="baixarRelatorioPDF(event)" data-role="ADMIN">Relatório</a></li>
+                <li class="nav-item"><a class="nav-link" href="/" data-role="ADMIN">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="cadastrarBolo.html" data-role="ADMIN">Cadastrar Bolo</a></li>
+                <li class="nav-item"><a class="nav-link link-warning">Listar Bolos</a></li>
+                <li class="nav-item"><a class="nav-link" href="cadastrarUsuario.html" data-role="ADMIN">Cadastrar Usuários</a></li>
+                <li class="nav-item"><a class="nav-link" href="listarUsuarios.html" data-role="ADMIN">Listar Usuários</a></li>
                 <li class="nav-item"><a class="nav-link" href="/auth/logout">Sair</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- Conteúdo principal -->
+                    <!-- Conteúdo principal -->
 <main class="container py-5">
     <h2 class="text-center mb-4">Lista de Bolos</h2>
     <div class="table-responsive">

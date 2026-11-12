@@ -10,11 +10,13 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-        <a class="navbar-brand" href="#">BoloTematico</a>
+        <a class="navbar-brand" href="/">BoloTematico</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a href="#" class="nav-link" onclick="baixarRelatorioPDF(event)">Relatório</a></li>
+                <li class="nav-item"><a class="nav-link link-warning">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="cadastrarBolo.html">Cadastrar Bolo</a></li>
-                <li class="nav-item"><a class="nav-link" href="listarBolos.html">Listar Bolo</a></li>
+                <li class="nav-item"><a class="nav-link" href="listarBolos.html">Listar Bolos</a></li>
                 <li class="nav-item"><a class="nav-link" href="cadastrarUsuario.html">Cadastrar Usuários</a></li>
                 <li class="nav-item"><a class="nav-link" href="listarUsuarios.html">Listar Usuários</a></li>
                 <li class="nav-item"><a class="nav-link" href="/auth/logout">Sair</a></li>
@@ -45,6 +47,26 @@
 <footer class="text-center text-muted py-3">
     &copy; 2026 BoloTematico. Todos os direitos reservados.
 </footer>
+
+<script>
+    async function baixarRelatorioPDF(event) {
+        event.preventDefault();
+        try {
+            const response = await fetch('/report/pdf');
+
+            if (!response.ok) {
+                throw new Error('Erro ao gerar relatório');
+            }
+
+            const blob = await response.blob();
+            const pdfUrl = URL.createObjectURL(blob);
+            window.open(pdfUrl, '_blank');
+        } catch (e) {
+            console.error(e);
+            alert('Não foi possível carregar o relatório PDF.');
+        }
+    }
+</script>
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
