@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,6 +34,19 @@ public class AuthController {
         session.invalidate(); // Encerra a sessão
         response.sendRedirect("/login.html"); // Redireciona para a página de login
         return ResponseEntity.ok().build(); //Retornar sem corpo
+    }
+
+    @GetMapping("/me")
+    @ResponseBody
+    public ResponseEntity<?> getCurrentUser(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).build();
+        }
+        return ResponseEntity.ok(Map.of(
+                "username", user.getUsername(),
+                "role", user.getRole().name()
+        ));
     }
 }
 

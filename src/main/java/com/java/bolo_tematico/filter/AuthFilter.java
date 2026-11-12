@@ -33,7 +33,7 @@ public class AuthFilter implements Filter {
 
         if ("USER".equals(role)) {
             // Usuário comum só pode acessar a página de listar bolos e logout
-            if (uri.contains("listarBolos") || uri.contains("bolos/list") || uri.contains("logout")) {
+            if (uri.contains("listarBolos") || uri.contains("bolos/list") || uri.contains("auth/me") || uri.contains("logout")) {
                 chain.doFilter(request, response);
             } else {
                 // Força redirecionamento para página de bolos

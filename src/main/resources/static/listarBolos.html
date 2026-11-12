@@ -20,7 +20,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="baixarRelatorioPDF(event)">Relatório</a>
+                    <a href="#" class="nav-link" onclick="baixarRelatorioPDF(event)" data-role="ADMIN">Relatório</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="/auth/logout">Sair</a></li>
             </ul>
@@ -42,7 +42,7 @@
                 <th>Tema</th>
                 <th>Aniversariante</th>
                 <th>Idade</th>
-                <th>Ações</th>
+                <th data-role="ADMIN">Ações</th>
             </tr>
             </thead>
             <tbody id="boloBody">
@@ -97,8 +97,8 @@
                     <td>${b.tema}</td>
                     <td>${b.aniversariante}</td>
                     <td>${b.idade}</td>
-                    <td class="d-flex gap-2">
-                        <button 
+                    <td class="d-flex gap-2" data-role="ADMIN">
+                        <button
                             onclick="window.location.href='editarBolo.html?id=${b.id}'"
                             class="btn btn-outline-primary"
                         >Editar</button>
@@ -107,11 +107,34 @@
                     </td>
                 </tr>`;
                 tbody.insertAdjacentHTML('beforeend', row);
+                verificarPermissao()
             });
         } catch (e) {
             console.error(e);
         }
     }
+
+    async function verificarPermissao() {
+        try {
+            const response = await fetch('/auth/me');
+            if (!response.ok) {
+                window.location.href = '/login.html';
+                return null;
+            }
+            const user = await response.json();
+            // Oculta elementos com Role diferente de ADMIN
+            document.querySelectorAll('[data-role]').forEach(element => {
+                if (element.dataset.role !== user.role) {
+                    element.remove()
+                }
+            });
+            return user;
+        } catch (error) {
+            console.error('Erro ao verificar permissões:', error);
+            return null;
+        }
+    }
+
     window.addEventListener('DOMContentLoaded', loadBolos);
 </script>
 
