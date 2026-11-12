@@ -78,3 +78,7 @@ O sistema cria um usuário administrador padrão no primeiro deploy, conforme as
 - Cadastro, Listagem, Edição e Exclusão de usuários
 - Geração de relatório
 - Login/logout
+
+### Demonstração
+
+![Demonstração](.github/assets/demo.gif)
