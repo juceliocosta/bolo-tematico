@@ -17,12 +17,12 @@
         <a class="navbar-brand" href="#">BoloTematico</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a href="#" class="nav-link" onclick="baixarRelatorioPDF(event)" data-role="ADMIN">Relatório</a></li>
+                <li class="nav-item d-none" data-role="ADMIN"><a href="#" class="nav-link" onclick="baixarRelatorioPDF(event)">Relatório</a></li>
                 <li class="nav-item"><a class="nav-link" href="/" data-role="ADMIN">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="cadastrarBolo.html" data-role="ADMIN">Cadastrar Bolo</a></li>
+                <li class="nav-item d-none" data-role="ADMIN"><a class="nav-link" href="cadastrarBolo.html">Cadastrar Bolo</a></li>
                 <li class="nav-item"><a class="nav-link link-warning">Listar Bolos</a></li>
-                <li class="nav-item"><a class="nav-link" href="cadastrarUsuario.html" data-role="ADMIN">Cadastrar Usuários</a></li>
-                <li class="nav-item"><a class="nav-link" href="listarUsuarios.html" data-role="ADMIN">Listar Usuários</a></li>
+                <li class="nav-item d-none"  data-role="ADMIN"><a class="nav-link" href="cadastrarUsuario.html">Cadastrar Usuários</a></li>
+                <li class="nav-item d-none"  data-role="ADMIN"><a class="nav-link" href="listarUsuarios.html">Listar Usuários</a></li>
                 <li class="nav-item"><a class="nav-link" href="/auth/logout">Sair</a></li>
             </ul>
         </div>
@@ -43,7 +43,7 @@
                 <th>Tema</th>
                 <th>Aniversariante</th>
                 <th>Idade</th>
-                <th data-role="ADMIN">Ações</th>
+                <th class="d-none" data-role="ADMIN">Ações</th>
             </tr>
             </thead>
             <tbody id="boloBody">
@@ -98,7 +98,7 @@
                     <td>${b.tema}</td>
                     <td>${b.aniversariante}</td>
                     <td>${b.idade}</td>
-                    <td class="d-flex gap-2" data-role="ADMIN">
+                    <td class="d-flex gap-2 d-none" data-role="ADMIN">
                         <button
                             onclick="window.location.href='editarBolo.html?id=${b.id}'"
                             class="btn btn-outline-primary"
@@ -123,10 +123,11 @@
                 return null;
             }
             const user = await response.json();
-            // Oculta elementos com Role diferente de ADMIN
+            // Exibe elementos com Role igual ao de ADMIN
             document.querySelectorAll('[data-role]').forEach(element => {
-                if (element.dataset.role !== user.role) {
-                    element.remove()
+                if (element.dataset.role === user.role) {
+                    element.classList.remove('d-none');
+                    element.classList.add('d-block');
                 }
             });
             return user;
